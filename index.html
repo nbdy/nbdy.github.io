@@ -21,7 +21,9 @@
         </div>
     </nav>
 
-    <div id="repoCharts"></div>
+    <div id="repoCharts">
+        <canvas id="reposOverTimeChart"></canvas>
+    </div>
 </div>
 </body>
 <script src="js/jquery.js"></script>
@@ -30,7 +32,7 @@
 <script src="js/chart.js"></script>
 <script src="js/github.js"></script>
 <script>
-    var reposOverTimeChart = new Chart($('#chartReposOverTime')[0].getContext('2d'), {
+    let reposOverTimeChart = new Chart($('#reposOverTimeChart').getContext('2d'), {
             type: 'line',
             data: {
                 // labels:
