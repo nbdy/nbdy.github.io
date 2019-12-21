@@ -12,11 +12,12 @@ function Github(username) {
     let github = {
         url: "https://github.com/" + username,
         username: username,
+        repositories: [],
         getRepositories: null,
         allFunctions: [],
     };
 
-    github.getRepositories = getRepositories(github);
+    github.getRepositories = getRepositories;
 
     github.allFunctions = [
         github.getRepositories,
