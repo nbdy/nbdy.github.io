@@ -45,7 +45,7 @@
         }]
     };
 
-    function updateReposOverTimeChartData(){
+    function updateReposOverTimeChartData(github){
         let repos = github.getRepositories();
 
         reposOverTimerChartData = {
@@ -59,7 +59,7 @@
         }
     }
 
-    function updateRepoCountData(){
+    function updateRepoCountData(github){
         document.getElementById("repoCount").innerText = github.repositories.size();
     }
 
@@ -70,8 +70,8 @@
     );
 
     window.setInterval(function () {
-        updateRepoCountData();
-        updateReposOverTimeChartData();
+        updateRepoCountData(github);
+        updateReposOverTimeChartData(github);
     }, 4200);
 </script>
 </html>
