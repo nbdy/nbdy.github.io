@@ -60,7 +60,7 @@
     }
 
     function updateRepoCountData(){
-        document.getElementById("repoCount").innerText = github.repoositories.size();
+        document.getElementById("repoCount").innerText = github.repositories.size();
     }
 
     new Chart(document.getElementById("reposOverTimeChart").getContext('2d'), {
