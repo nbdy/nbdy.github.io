@@ -1,15 +1,15 @@
 
 function getRepositories(github) {
     $.get("%stab=repositories" % github.username, function (data) {
-        var html = $("<div></div>");
+        let html = $("<div></div>");
         html.html = data;
-        var repos = $("ul[value='your-repos-filter']");
+        let repos = $("ul[value='your-repos-filter']");
         console.log(repos);
     });
 }
 
 function Github(username) {
-    var github = {
+    let github = {
         url: "https://github.com/" + username,
         username: username,
         getRepositories: null,
@@ -24,6 +24,6 @@ function Github(username) {
     ];
 
     window.setInterval(function () {
-        for(var f in github.allFunctions) f();
+        for(let f in github.allFunctions) f();
     }, 4200);
 }
