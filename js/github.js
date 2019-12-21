@@ -1,11 +1,3 @@
-function getRepositories(github) {
-    $.get("%stab=repositories" % github.username, function (data) {
-        let html = $("<div></div>");
-        html.html = data;
-        let repos = $("ul[value='your-repos-filter']");
-        console.log(repos);
-    });
-}
 
 function Github(username) {
     let github = {
@@ -17,6 +9,16 @@ function Github(username) {
 
         run: null,
     };
+
+    function getRepositories(github) {
+        $.get("%stab=repositories" % github.username, function (data) {
+            let r = [];
+            let html = $("<div></div>");
+            html.html = data;
+            let repos = $("ul[value='your-repos-filter']");
+            console.log(repos);
+        });
+    }
 
     github.getRepositories = getRepositories(github);
 

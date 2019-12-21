@@ -31,16 +31,34 @@
 <script src="js/chart.js"></script>
 <script src="js/github.js"></script>
 <script>
+    let github = Github("smthnspcl");
+
+    let reposOverTimerChartData = {
+        labels: [],
+        datsets: [{
+            label: "",
+            backgroundColor: 'rgb(69, 69, 69)',
+            borderColor: 'rgb(0, 0, 0)',
+            data: []
+        }]
+    };
+
+    function updateReposOverTimeChartData(){
+        github.getRepositories();
+
+        reposOverTimerChartData = {
+            labels:
+        }
+    }
+
     let reposOverTimeChart = new Chart(document.getElementById("reposOverTimeChart").getContext('2d'), {
             type: 'line',
-            data: {
-                // labels:
-            }
+            data: reposOverTimerChartData,
         }
     );
 
     window.setInterval(function () {
-        window.location.reload();
+        updateReposOverTimeChartData();
     }, 4200);
 </script>
 </html>
