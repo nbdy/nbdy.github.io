@@ -1,29 +1,36 @@
-
 function getRepositories(github) {
     $.get("%stab=repositories" % github.username, function (data) {
-        var html = $("<div></div>");
+        let html = $("<div></div>");
         html.html = data;
-        var repos = $("ul[value='your-repos-filter']");
+        let repos = $("ul[value='your-repos-filter']");
         console.log(repos);
     });
 }
 
 function Github(username) {
-    var github = {
+    let github = {
         url: "https://github.com/" + username,
         username: username,
         getRepositories: null,
+        callbacks: [],
         allFunctions: [],
+
+        run: null,
     };
 
     github.getRepositories = getRepositories(github);
 
     github.allFunctions = [
         github.getRepositories,
-
     ];
 
-    window.setInterval(function () {
-        for(var f in github.allFunctions) f();
-    }, 4200);
+    github.run = function () {
+        for(let func in github.allFunctions) func(github);
+    };
+
+    return github;
 }
+
+window.setInterval(function () {
+    Github("smthnspcl").run();
+}, 4200);
