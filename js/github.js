@@ -1,36 +1,48 @@
+{
+    let BASE_URL = "https://github.com/";
 
-function Github(username) {
-    let github = {
-        url: "https://github.com/" + username,
-        username: username,
-        getRepositories: null,
-        callbacks: [],
-        allFunctions: [],
-
-        run: null,
-    };
-
-    function getRepositories(github) {
-        $.get("%stab=repositories" % github.username, function (data) {
-            let r = [];
-            let html = $("<div></div>");
-            html.html = data;
-            let repos = $("ul[value='your-repos-filter']");
-            console.log(repos);
-        });
+    function Repository(username, repository) {
+        let r = {
+            url: BASE_URL + username + "/" + repository,
+            created: null,
+        }
     }
 
-    github.getRepositories = getRepositories(github);
+    function Github(username) {
+        let github = {
+            url: BASE_URL + username,
+            username: username,
+            repositories: [],
+            getRepositories: null,
+            callbacks: [],
+            allFunctions: [],
 
-    github.allFunctions = [
-        github.getRepositories,
-    ];
+            run: null,
+        };
 
-    github.run = function () {
-        for(let func in github.allFunctions) func(github);
-    };
+        function getRepositories(github) {
+            $.get("%stab=repositories" % github.username, function (data) {
+                let r = [];
+                let html = $("<div></div>");
+                html.html = data;
+                let repos = $("ul[value='your-repos-filter']");
+                console.log(repos);
+                github.repositories.append()
+            });
+        }
 
-    return github;
+        github.getRepositories = getRepositories(github);
+
+        github.allFunctions = [
+            github.getRepositories,
+        ];
+
+        github.run = function () {
+            for (let func in github.allFunctions) func(github);
+        };
+
+        return github;
+    }
 }
 
 window.setInterval(function () {

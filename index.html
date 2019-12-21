@@ -20,6 +20,8 @@
         </div>
     </nav>
 
+    <h1 id="repoCount">0</h1>
+
     <div id="repoCharts">
         <canvas id="reposOverTimeChart"></canvas>
     </div>
@@ -44,11 +46,21 @@
     };
 
     function updateReposOverTimeChartData(){
-        github.getRepositories();
+        let repos = github.getRepositories();
 
         reposOverTimerChartData = {
-            labels:
+            labels: [],
+            datsets: [{
+                label: "repos over time",
+                backgroundColor: 'rgb(69, 69, 69)',
+                borderColor: 'rgb(0, 0, 0)',
+                data: []
+            }]
         }
+    }
+
+    function updateRepoCountData(){
+        document.getElementById("repoCount").innerText = github.rep.size();
     }
 
     let reposOverTimeChart = new Chart(document.getElementById("reposOverTimeChart").getContext('2d'), {
