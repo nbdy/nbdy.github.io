@@ -60,16 +60,17 @@
     }
 
     function updateRepoCountData(){
-        document.getElementById("repoCount").innerText = github.rep.size();
+        document.getElementById("repoCount").innerText = github.repoositories.size();
     }
 
-    let reposOverTimeChart = new Chart(document.getElementById("reposOverTimeChart").getContext('2d'), {
+    new Chart(document.getElementById("reposOverTimeChart").getContext('2d'), {
             type: 'line',
             data: reposOverTimerChartData,
         }
     );
 
     window.setInterval(function () {
+        updateRepoCountData();
         updateReposOverTimeChartData();
     }, 4200);
 </script>
