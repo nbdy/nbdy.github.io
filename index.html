@@ -4,10 +4,7 @@
     <meta charset="UTF-8">
     <title>portfolio</title>
     <link rel="stylesheet"
-          href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
-          integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
-          crossorigin="anonymous">
-
+          href="css/bootstrap.css">
 </head>
 <body>
 <div class="container">
@@ -23,33 +20,57 @@
         </div>
     </nav>
 
-    <canvas id="chartReposOverTime"></canvas>
+    <h1 id="repoCount">0</h1>
+
+    <div id="repoCharts">
+        <canvas id="reposOverTimeChart"></canvas>
+    </div>
 </div>
 </body>
-<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
-        integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
-        crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
-        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
-        crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
-        integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
-        crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script src="js/octokit.js"></script>
+<script src="js/jquery.js"></script>
+<script src="js/popper.js"></script>
+<script src="js/bootstrap.js"></script>
+<script src="js/chart.js"></script>
+<script src="js/github.js"></script>
 <script>
+    let github = Github("smthnspcl");
 
+    let reposOverTimerChartData = {
+        labels: [],
+        datsets: [{
+            label: "",
+            backgroundColor: 'rgb(69, 69, 69)',
+            borderColor: 'rgb(0, 0, 0)',
+            data: []
+        }]
+    };
 
-    var reposOverTimeChart = new Chart($('#chartReposOverTime').getContext('2d'), {
+    function updateReposOverTimeChartData(){
+        let repos = github.getRepositories();
+
+        reposOverTimerChartData = {
+            labels: [],
+            datsets: [{
+                label: "repos over time",
+                backgroundColor: 'rgb(69, 69, 69)',
+                borderColor: 'rgb(0, 0, 0)',
+                data: []
+            }]
+        }
+    }
+
+    function updateRepoCountData(){
+        document.getElementById("repoCount").innerText = github.rep.size();
+    }
+
+    let reposOverTimeChart = new Chart(document.getElementById("reposOverTimeChart").getContext('2d'), {
             type: 'line',
-            data: {
-                labels: []
-            }
+            data: reposOverTimerChartData,
         }
     );
 
     window.setInterval(function () {
-        window.location.reload();
+        updateReposOverTimeChartData();
     }, 4200);
 </script>
 </html>
