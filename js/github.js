@@ -24,7 +24,5 @@ function Github(username) {
 
     ];
 
-    window.setInterval(function () {
-        for(let f in github.allFunctions) f();
-    }, 4200);
+    return github;
 }
