@@ -31,7 +31,7 @@
 <script src="js/chart.js"></script>
 <script src="js/github.js"></script>
 <script>
-    let reposOverTimeChart = new Chart($('#reposOverTimeChart').getContext('2d'), {
+    let reposOverTimeChart = new Chart(document.getElementById("reposOverTimeChart").getContext('2d'), {
             type: 'line',
             data: {
                 // labels:
