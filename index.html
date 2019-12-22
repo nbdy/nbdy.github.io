@@ -26,6 +26,7 @@
         <canvas id="reposOverTimeChart"></canvas>
     </div>
 </div>
+<div id="frm"></div>
 </body>
 <script src="js/jquery.js"></script>
 <script src="js/popper.js"></script>
@@ -48,17 +49,7 @@
     };
 
     function updateReposOverTimeChartData(github){
-        let repos = github.getRepositories();
-
-        reposOverTimerChartData = {
-            labels: [],
-            datsets: [{
-                label: "repos over time",
-                backgroundColor: 'rgb(69, 69, 69)',
-                borderColor: 'rgb(0, 0, 0)',
-                data: []
-            }]
-        }
+        github.getRepositories();
     }
 
     function updateRepoCountData(github){
@@ -71,9 +62,13 @@
         }
     );
 
+    updateReposOverTimeChartData(github);
+
+    /*
     window.setInterval(function () {
         updateRepoCountData(github);
         updateReposOverTimeChartData(github);
-    }, 4200);
+    }, 42000);
+     */
 </script>
 </html>
