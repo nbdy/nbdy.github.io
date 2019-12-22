@@ -2,7 +2,7 @@ let Request = {
     request: function (url, method, data, cb){
         let r = new XMLHttpRequest();
         r.addEventListener("load", cb);
-        r.open(method, "https://crossorigin.me/" + url);
+        r.open(method, "http://127.0.0.1:8043/proxy/" + url);
         r.send(data);
     },
     get: function (url, cb) {
