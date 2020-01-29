@@ -9,7 +9,7 @@
 <body>
 <div class="container">
     <nav class="navbar navbar-light">
-        <a class="navbar-brand" href="#">pascal e.</a>
+        <a id="nav_name" class="navbar-brand" href="#">pascal e.</a>
 
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto">
@@ -20,7 +20,11 @@
         </div>
     </nav>
 
-    <h1>repositories: <a href="https://github.com/smthnspcl?tab=repositories" id="repoCount">0</a></h1>
+    <h3>github overview</h3>
+
+    <h5>since: <a id="since"></a></h5>
+    <h5>years: <a id="years"></a></h5>
+    <h5>repos: <a href="https://github.com/smthnspcl?tab=repositories" id="repoCount"></a></h5>
 
     <div id="repoCharts">
         <canvas id="reposOverTimeChart"></canvas>
@@ -34,10 +38,31 @@
 <script src="js/chart.js"></script>
 <script src="js/github.js"></script>
 <script>
-    let github = Github("smthnspcl");
+    Date.prototype.getYearDifference = function (pastDate) {
+        let d =(this.getTime() - pastDate.getTime()) / 1000;
+        d /= (60 * 60 * 24);
+        return Math.abs(Math.round(d / 365.25));
+    };
 
-    console.log(github);
+    function updateInformation(github) {
+        console.log("updateInformation");
+        $('#nav_name').href = github.information.url;
+        $('#since').text(github.information.created_at);
+        let years = new Date().getYearDifference(new Date(github.information.created_at));
+        console.log(years);
+        $('#years').text(years);
+        $('#repoCount').text(github.information.public_repos);
+    }
 
+    function updateRepoStatistics(github){
+        console.log("updateRepoStatistics");
+    }
+
+    let github = new Github("smthnspcl", updateInformation, updateRepoStatistics);
+
+    github.getInformation();
+    github.getRepositories();
+/*
     let reposOverTimerChartData = {
         labels: [],
         datsets: [{
@@ -47,24 +72,13 @@
             data: []
         }]
     };
-
-    function updateReposOverTimeChartData(github){
-        github.getRepositories();
-    }
-
-    function updateRepoCountData(github){
-        document.getElementById("repoCount").innerText = github.repositories.length;
-    }
-
     new Chart(document.getElementById("reposOverTimeChart").getContext('2d'), {
             type: 'line',
             data: reposOverTimerChartData,
         }
     );
 
-    updateReposOverTimeChartData(github);
 
-    /*
     window.setInterval(function () {
         updateRepoCountData(github);
         updateReposOverTimeChartData(github);

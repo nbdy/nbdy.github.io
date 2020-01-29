@@ -1,38 +1,27 @@
-let Request = {
-    request: function (url, method, data, cb){
-        let r = new XMLHttpRequest();
-        r.addEventListener("load", cb);
-        r.open(method, "http://127.0.0.1:8043/proxy/" + url);
-        r.send(data);
-    },
-    get: function (url, cb) {
-        Request.request(url, "GET", null, cb);
-    },
-    post: function (url, data, cb) {
-        Request.request(url, "POST", null, cb);
+let Github = function(username, cbGetInformation, cbGetRepositories) {
+    this.username = username;
+    this.url = "https://api.github.com/users/" + username;
+    this.information = null;
+    this.repositories = [];
+
+    this.cbGetInformation = cbGetInformation;
+    this.cbGetRepositories = cbGetRepositories;
+
+    this._cbGetInformation = (data) => {
+        this.information = data;
+        if(this.cbGetInformation !== null) this.cbGetInformation(this);
+    };
+
+    this._cbGetRepositories = (data) => {
+        this.repositories = data;
+        if(this.cbGetRepositories !== null) this.cbGetRepositories(this);
+    };
+
+    this.getInformation = function () {
+        $.getJSON(github.url, null, github._cbGetInformation);
+    };
+
+    this.getRepositories = function () {
+        $.getJSON(github.url + "/repos", null, github._cbGetRepositories);
     }
 };
-
-function Github(username) {
-    let github = {
-        url: "https://github.com/" + username,
-        username: username,
-        repositories: [],
-        getRepositories: null,
-        allFunctions: [],
-
-        _cbGetRepositories: function (data) {
-            console.log(data);
-        },
-    };
-
-    github.getRepositories = function getRepositories() {
-        Request.get(github.url, github._cbGetRepositories);
-    };
-
-    github.allFunctions = [
-        github.getRepositories,
-    ];
-
-    return github;
-}
