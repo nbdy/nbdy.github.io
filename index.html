@@ -45,17 +45,13 @@
     };
 
     function updateInformation(github) {
-        console.log("updateInformation");
         $('#nav_name').href = github.information.url;
         $('#since').text(github.information.created_at);
-        let years = new Date().getYearDifference(new Date(github.information.created_at));
-        console.log(years);
-        $('#years').text(years);
+        $('#years').text(new Date().getYearDifference(new Date(github.information.created_at)));
         $('#repoCount').text(github.information.public_repos);
     }
 
     function updateRepoStatistics(github){
-        console.log("updateRepoStatistics");
     }
 
     let github = new Github("smthnspcl", updateInformation, updateRepoStatistics);
