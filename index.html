@@ -9,7 +9,11 @@
 <body>
 <div class="container">
     <nav class="navbar navbar-light">
-        <a id="nav_name" class="navbar-brand" href="#">pascal e.</a>
+        <a class="navbar-brand" href="#">pascal e.</a>
+
+        <a id="nav_github"></a>
+
+        <span id="hireable_alert" class="alert"><a id="hireable"></a></span>
 
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto">
@@ -25,6 +29,8 @@
     <h5>since: <a id="since"></a></h5>
     <h5>years: <a id="years"></a></h5>
     <h5>repos: <a href="https://github.com/smthnspcl?tab=repositories" id="repoCount"></a></h5>
+    <h5>gazer: <a id="gazer"></a></h5>
+    <h5>commits: <a id="commits"></a></h5>
 
     <div id="repoCharts">
         <canvas id="reposOverTimeChart"></canvas>
@@ -45,16 +51,46 @@
     };
 
     function updateInformation(github) {
-        $('#nav_name').href = github.information.url;
+        $('#nav_github').text(github.information.login).attr("href", github.information.url);
         $('#since').text(github.information.created_at);
         $('#years').text(new Date().getYearDifference(new Date(github.information.created_at)));
         $('#repoCount').text(github.information.public_repos);
+        if(!github.information.hireable) {
+            $('#hireable_alert').addClass("alert-warning");
+            $('#hireable').text("employed");
+        } else {
+            $('#hireable_alert').addClass("alert-success");
+            $('#hireable').text("hireable");
+        }
+    }
+
+    function updateCommitSum(github) {
+        $('#commits').text(github.commitSum);
+    }
+
+    function updateGazerSum(github) {
+        $('#gazer').text(github.gazerSum);
     }
 
     function updateRepoStatistics(github){
+        /*
+        for(let repo in github.repositories){
+            let r = github.repositories[repo];
+            console.log(r.commits_url);
+            github.getCommits(r.commits_url);
+            github.getGazer(r.stargazers_url);
+        }
+        // rate limits are kicking in
+        */
     }
 
-    let github = new Github("smthnspcl", updateInformation, updateRepoStatistics);
+    let github = new Github(
+        "smthnspcl",
+        updateInformation,
+        updateRepoStatistics,
+        updateCommitSum,
+        updateGazerSum
+    );
 
     github.getInformation();
     github.getRepositories();

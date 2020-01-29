@@ -1,20 +1,40 @@
-let Github = function(username, cbGetInformation, cbGetRepositories) {
+let Github = function(
+    username,
+    cbGetInformation,
+    cbGetRepositories,
+    cbGetCommits,
+    cbGetGazer
+) {
     this.username = username;
     this.url = "https://api.github.com/users/" + username;
     this.information = null;
     this.repositories = [];
+    this.commitSum = 0;
+    this.gazerSum = 0;
 
     this.cbGetInformation = cbGetInformation;
     this.cbGetRepositories = cbGetRepositories;
+    this.cbGetCommits = cbGetCommits;
+    this.cbGetGazer = cbGetGazer;
 
     this._cbGetInformation = (data) => {
         this.information = data;
-        if(this.cbGetInformation !== null) this.cbGetInformation(this);
+        this.cbGetInformation(this);
     };
 
     this._cbGetRepositories = (data) => {
         this.repositories = data;
-        if(this.cbGetRepositories !== null) this.cbGetRepositories(this);
+        this.cbGetRepositories(this);
+    };
+
+    this._cbGetCommits = (data) => {
+        this.commitSum += data.length;
+        this.cbGetCommits(this);
+    };
+
+    this._cbGetGazer = (data) => {
+        this.gazerSum += data.length;
+        this.cbGetGazer(this);
     };
 
     this.getInformation = function () {
@@ -22,6 +42,14 @@ let Github = function(username, cbGetInformation, cbGetRepositories) {
     };
 
     this.getRepositories = function () {
-        $.getJSON(github.url + "/repos", null, github._cbGetRepositories);
+        $.getJSON(github.url + "/repos?per_page=500", null, github._cbGetRepositories);
+    };
+
+    this.getCommits = function (url) {
+        $.getJSON(url, null, github._cbGetCommits);
+    };
+
+    this.getGazer = function (url) {
+        $.getJSON(url, null, github._cbGetGazer);
     }
 };
