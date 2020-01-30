@@ -29,8 +29,10 @@
     <h5>since: <a id="since"></a></h5>
     <h5>years: <a id="years"></a></h5>
     <h5>repos: <a href="https://github.com/smthnspcl?tab=repositories" id="repoCount"></a></h5>
+    <!--
     <h5>gazer: <a id="gazer"></a></h5>
     <h5>commits: <a id="commits"></a></h5>
+    -->
 
     <div id="repoCharts">
         <canvas id="reposOverTimeChart"></canvas>
@@ -51,7 +53,7 @@
     };
 
     function updateInformation(github) {
-        $('#nav_github').text(github.information.login).attr("href", github.information.url);
+        $('#nav_github').text(github.information.login).attr("href", github.information.html_url);
         $('#since').text(github.information.created_at);
         $('#years').text(new Date().getYearDifference(new Date(github.information.created_at)));
         $('#repoCount').text(github.information.public_repos);
